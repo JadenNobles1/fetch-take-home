@@ -31,29 +31,32 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+    <div className="page-container">
+      <h1 className="center-header">Fetch Dog Take Home Login</h1>
+      <form onSubmit={handleSubmit} className="form-row">
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+      {error && <p className="error-message">{error}</p>}
+    </div>
   );
 };
 
 // Dog Search Component
-const DogSearch = () => {
+  const DogSearch = () => {
   const [breeds, setBreeds] = useState([]);
   const [dogs, setDogs] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -234,7 +237,7 @@ useEffect(() => {
       <div className="dogs-container">
         {dogs.map((dog) => (
           <div key={dog.id} className="dog-card">
-            <img src={dog.img} alt={dog.name} width="100" />
+            <img src={dog.img} alt={dog.name} width="100" height="100" />
             <p>Name: {dog.name}</p>
             <p>Breed: {dog.breed}</p>
             <p>Age: {dog.age} years old</p>
@@ -246,7 +249,7 @@ useEffect(() => {
       ))}
       </div>
       {/* Pagination Controls */}
-      <div className="center-items">
+      <div className="center-items" style={{marginTop: "10px"}} >
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
         </button>
