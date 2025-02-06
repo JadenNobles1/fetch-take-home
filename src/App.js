@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './index.css';
 
 // Login Component
@@ -32,8 +32,18 @@ const Login = ({ onLogin }) => {
 
   return (
     <div className="page-container">
-      <h1 className="center-header">Fetch Dog Take Home Login</h1>
-      <form onSubmit={handleSubmit} className="form-row">
+      {/* Logo and Heading */}
+      <header style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+  {/* Logo */}
+  <img
+    src="https://cdn.brandfetch.io/id7Cm60rQf/theme/dark/idaA507RHz.svg?c=1bx1740417582576id64Mup7ac7BMUaS6m&t=1675057844666"
+    alt="Fetch Rewards Logo"
+    className="logo"
+  />
+
+  {/* Heading */}
+  <h1 style={{ margin: 0 }}>Fetch Take Home Login</h1>
+</header>      <form onSubmit={handleSubmit} className="form-row">
         <input
           type="text"
           placeholder="Name"
@@ -56,7 +66,7 @@ const Login = ({ onLogin }) => {
 };
 
 // Dog Search Component
-  const DogSearch = () => {
+const DogSearch = ({ onLogout }) => {
   const [breeds, setBreeds] = useState([]);
   const [dogs, setDogs] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -71,6 +81,9 @@ const Login = ({ onLogin }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [matchedDog, setMatchedDog] = useState(null); // Store matched dog
   const pageSize = 10; // Number of dogs per page
+
+  // Reference to the matched dog section
+  const matchRef = useRef(null);
 
   useEffect(() => {
     fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", {
@@ -120,7 +133,6 @@ const Login = ({ onLogin }) => {
           credentials: "include",
         }
       );
-
       const dogDetails = await dogDetailsResponse.json();
       setDogs(dogDetails);
       setCurrentPage(page); // Update current page
@@ -141,18 +153,16 @@ const Login = ({ onLogin }) => {
     }
   };
 
-  // Update toggleSortOrder to only toggle the sort state
   const toggleSortOrder = () => {
     setSort((prevSort) => (prevSort === "breed:asc" ? "breed:desc" : "breed:asc"));
   };
 
-  // Use useEffect to call handleSearch when the sort state changes
   useEffect(() => {
     if (dogs.length > 0) {
       handleSearch(1); // Re-fetch results when sort changes
     }
-  }, [sort]); // Only run when the sort state changes
-  
+  }, [sort]);
+
   const handleFavorite = (dogId) => {
     setFavorites((prev) =>
       prev.includes(dogId) ? prev.filter((id) => id !== dogId) : [...prev, dogId]
@@ -190,6 +200,13 @@ const Login = ({ onLogin }) => {
       );
       const matchedDogDetails = await matchedDogResponse.json();
       setMatchedDog(matchedDogDetails[0]);
+
+      // Scroll to the matched dog section after a short delay
+      setTimeout(() => {
+        if (matchRef.current) {
+          matchRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
     } catch (error) {
       console.error("Error generating match:", error);
       alert("An error occurred while generating the match. Please try again later.");
@@ -197,9 +214,22 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div>
-      <h1 className="center-items">Fetch Dog Search</h1>
-      <div className="center-items">
+    <div className="page-container">
+      {/* Logo and Heading */}
+      <header style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+        <img
+          src="https://cdn.brandfetch.io/id7Cm60rQf/theme/dark/idaA507RHz.svg?c=1bx1740417582576id64Mup7ac7BMUaS6m&t=1675057844666"
+          alt="Fetch Rewards Logo"
+          className="logo"
+        />
+        <h1 style={{ margin: 0 }}>Fetch Dog Search</h1>
+        <button onClick={onLogout} style={{ marginLeft: "auto" }} className="button-spacing">
+          Logout
+        </button>
+      </header>
+
+      {/* Filters */}
+      <div className="form-row">
         <select
           value={filters.breed}
           onChange={(e) => setFilters({ ...filters, breed: e.target.value })}
@@ -211,73 +241,86 @@ const Login = ({ onLogin }) => {
             </option>
           ))}
         </select>
-        <input className="button-spacing"
+        <input
           type="number"
           placeholder="Min Age"
           value={filters.ageMin}
           onChange={(e) => setFilters({ ...filters, ageMin: e.target.value })}
         />
-        <input className="button-spacing"
+        <input
           type="number"
           placeholder="Max Age"
           value={filters.ageMax}
           onChange={(e) => setFilters({ ...filters, ageMax: e.target.value })}
         />
-        <input className="button-spacing"
+        <input
           type="text"
           placeholder="Zip Codes"
           value={filters.zipCodes}
           onChange={(e) => setFilters({ ...filters, zipCodes: e.target.value })}
         />
-        <button onClick={() => handleSearch(1)} className="button-spacing">Search</button>
-        <button onClick={toggleSortOrder} className="button-spacing" disabled={dogs.length === 0}>
-          Sort by Breed ({sort === "breed:desc" ? "Ascending" : "Descending"})
+        <button onClick={() => handleSearch(1)} className="button-spacing">
+          Search
+        </button>
+        <button onClick={toggleSortOrder} className="button-spacing">
+          Sort by Breed ({sort === "breed:asc" ? "Ascending" : "Descending"})
         </button>
       </div>
-      <h2 className="center-items">Results</h2>
+
+      {/* Results */}
+      <h2>Results</h2>
       <div className="dogs-container">
         {dogs.map((dog) => (
           <div key={dog.id} className="dog-card">
-            <img src={dog.img} alt={dog.name} width="100" height="100" />
-            <p>Name: {dog.name}</p>
-            <p>Breed: {dog.breed}</p>
-            <p>Age: {dog.age} years old</p>
-            <p>Zip Code: {dog.zip_code}</p>
-            <button onClick={() => handleFavorite(dog.id)}>
-              {favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
-            </button>
+            <div style={{ display: "flex", justifyContent: "center"}}>
+              <img src={dog.img} alt={dog.name} />
+            </div>
+            <div style={{justifyContent: "left"}}>
+              <p><strong>Name:</strong> {dog.name}</p>
+              <p><strong>Breed:</strong> {dog.breed}</p>
+              <p><strong>Age:</strong> {dog.age} years old</p>
+              <p><strong>Zip Code:</strong> {dog.zip_code}</p>
+            </div>
+            <div style={{ display: "flex", justifyContent: "center"}}>
+              <button onClick={() => handleFavorite(dog.id)}>
+                {favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
+              </button>
+            </div>
           </div>
-      ))}
+        ))}
       </div>
+
       {/* Pagination Controls */}
-      <div className="center-items" style={{marginTop: "10px"}} >
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
+      <div className="pagination-controls">
+        <button onClick={handlePrevPage} className="button-spacing" disabled={currentPage === 1}>
           Previous
         </button>
-        <span className="button-spacing">
+        <span className="button-spacing" >
           Page {currentPage} of {totalPages}
         </span>
-        <button onClick={handleNextPage} className="button-spacing" disabled={currentPage === totalPages}>
+        <button onClick={handleNextPage} className="button-spacing"  disabled={currentPage === totalPages}>
           Next
         </button>
       </div>
 
       {/* Generate Match Button */}
-      <div className="center-items" style={{ marginTop: "10px" }}>
-        <button onClick={handleMatch}>Generate Match</button>
+      <button onClick={handleMatch} style={{marginTop: "10px"}}>
+        Generate Match
+      </button>
+
+      {/* Matched Dog Section */}
+      <div ref={matchRef}>
+        {matchedDog && (
+          <div className="matched-dog">
+            <h2>Your Match</h2>
+            <img src={matchedDog.img} alt={matchedDog.name} />
+            <p><strong>Name:</strong> {matchedDog.name}</p>
+            <p><strong>Breed:</strong> {matchedDog.breed}</p>
+            <p><strong>Age:</strong> {matchedDog.age} years old</p>
+            <p><strong>Zip Code:</strong> {matchedDog.zip_code}</p>
+          </div>
+        )}
       </div>
-      
-      {/* Display Matched Dog */}
-      {matchedDog && (
-        <div>
-          <h2>Your Match</h2>
-          <img src={matchedDog.img} alt={matchedDog.name} width="100" />
-          <p>Name: {matchedDog.name}</p>
-          <p>Breed: {matchedDog.breed}</p>
-          <p>Age: {matchedDog.age} years old</p>
-          <p>Zip Code: {matchedDog.zip_code}</p>
-        </div>
-      )}
     </div>
   );
 };
@@ -285,15 +328,32 @@ const Login = ({ onLogin }) => {
 // App Component
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      // Call the logout endpoint
+      await fetch("https://frontend-take-home-service.fetch.com/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      // Update the app state to log the user out
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("An error occurred while logging out. Please try again later.");
+    }
+  };
+
   return (
     <div>
       {!isLoggedIn ? (
         <Login onLogin={() => setIsLoggedIn(true)} />
       ) : (
-        <DogSearch />
+        <DogSearch onLogout={handleLogout} />
       )}
     </div>
   );
 };
-
 export default App;
