@@ -117,6 +117,7 @@ const DogSearch = () => {
           credentials: "include",
         }
       );
+
       const dogDetails = await dogDetailsResponse.json();
       setDogs(dogDetails);
       setCurrentPage(page); // Update current page
@@ -137,17 +138,17 @@ const DogSearch = () => {
     }
   };
 
-// Update toggleSortOrder to only toggle the sort state
-const toggleSortOrder = () => {
-  setSort((prevSort) => (prevSort === "breed:asc" ? "breed:desc" : "breed:asc"));
-};
+  // Update toggleSortOrder to only toggle the sort state
+  const toggleSortOrder = () => {
+    setSort((prevSort) => (prevSort === "breed:asc" ? "breed:desc" : "breed:asc"));
+  };
 
-// Use useEffect to call handleSearch when the sort state changes
-useEffect(() => {
-  if (dogs.length > 0) {
-    handleSearch(1); // Re-fetch results when sort changes
-  }
-}, [sort]); // Only run when the sort state changes
+  // Use useEffect to call handleSearch when the sort state changes
+  useEffect(() => {
+    if (dogs.length > 0) {
+      handleSearch(1); // Re-fetch results when sort changes
+    }
+  }, [sort]); // Only run when the sort state changes
   
   const handleFavorite = (dogId) => {
     setFavorites((prev) =>
