@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fetch-take-home/static/css/main.6de9105b.css",
+    "main.js": "/fetch-take-home/static/js/main.8875c1c8.js",
+    "index.html": "/fetch-take-home/index.html",
+    "main.6de9105b.css.map": "/fetch-take-home/static/css/main.6de9105b.css.map",
+    "main.8875c1c8.js.map": "/fetch-take-home/static/js/main.8875c1c8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6de9105b.css",
+    "static/js/main.8875c1c8.js"
+  ]
+}
