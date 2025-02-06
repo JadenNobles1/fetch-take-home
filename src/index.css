@@ -22,7 +22,6 @@
     display: flex;
     justify-content: center;
   }
-<<<<<<< HEAD
   
 .page-container {
     display: flex;
@@ -39,10 +38,5 @@
   .form-row {
     display: flex;
     gap: 10px;
-=======
-
-  .test{
-    
->>>>>>> 0b9c02bb15b2d70fca8f57dedb2e14284159534b
   }
   
