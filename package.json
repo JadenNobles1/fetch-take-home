@@ -9,7 +9,8 @@
     "dev": "vite",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [
@@ -22,5 +23,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "homepage": "https://jadennobles1.github.io/fetch-take-home",
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
