@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a React-based application that allows users to log in, search for dogs by breed, age, and location, and save favorites. Users can also find their best-matched dog based on selected favorites.
+This is a React-based application for Fetch that allows users to log in, search for dogs by breed, age, and location, and save favorites. Users can also find their best-matched dog based on selected favorites.
 
 ## Features
 
