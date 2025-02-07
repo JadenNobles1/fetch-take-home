@@ -54,15 +54,3 @@ This will launch the app in development mode, and it will be accessible at http:
 - Click "Match" to generate the best match from your favorite list.
 
 - Click "Logout" to end your session.
-
-## API Endpoints Used
-
-- POST /auth/login: Authenticates the user
-
-- GET /dogs/breeds: Retrieves a list of available dog breeds
-
-- GET /dogs/search: Searches for dogs based on filters
-
-- POST /dogs: Retrieves dog details
-
-- POST /dogs/match: Matches a user with a dog from their favorites
