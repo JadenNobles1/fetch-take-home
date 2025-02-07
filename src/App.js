@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './index.css';
 
-// Login Component
+// Login
 const Login = ({ onLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,31 +34,33 @@ const Login = ({ onLogin }) => {
     <div className="page-container">
       {/* Logo and Heading */}
       <header style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-  {/* Logo */}
-  <img
-    src="https://cdn.brandfetch.io/id7Cm60rQf/theme/dark/idaA507RHz.svg?c=1bx1740417582576id64Mup7ac7BMUaS6m&t=1675057844666"
-    alt="Fetch Rewards Logo"
-    className="logo"
-  />
 
-  {/* Heading */}
-  <h1 style={{ margin: 0 }}>Fetch Take Home Login</h1>
-</header>      <form onSubmit={handleSubmit} className="form-row">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
+      {/* Logo */}
+      <img
+        src="https://cdn.brandfetch.io/id7Cm60rQf/theme/dark/idaA507RHz.svg?c=1bx1740417582576id64Mup7ac7BMUaS6m&t=1675057844666"
+        alt="Fetch Rewards Logo"
+        className="logo"
+      />
+
+        {/* Heading */}
+        <h1 style={{ margin: 0 }}>Fetch Take Home Login</h1>
+        </header>      
+        <form onSubmit={handleSubmit} className="form-row">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button type="submit">Login</button>
       </form>
       {error && <p className="error-message">{error}</p>}
     </div>
@@ -94,6 +96,7 @@ const DogSearch = ({ onLogout }) => {
       .catch((error) => console.error("Error fetching breeds:", error));
   }, []);
 
+  // Handle Search
   const handleSearch = async (page = 1) => {
     try {
       const formattedFilters = {
@@ -163,12 +166,14 @@ const DogSearch = ({ onLogout }) => {
     }
   }, [sort]);
 
+  // Handle Favorite
   const handleFavorite = (dogId) => {
     setFavorites((prev) =>
       prev.includes(dogId) ? prev.filter((id) => id !== dogId) : [...prev, dogId]
     );
   };
 
+  // Handle Match
   const handleMatch = async () => {
     if (favorites.length === 0) {
       alert("Please add at least one dog to your favorites before generating a match.");
